@@ -1,0 +1,42 @@
+count = 0
+areas = []
+end_flag = 0
+area_str = ''
+process = ''
+end_mark = 0
+config_commands = []
+import re
+
+with open('./config.cfg', 'r') as fp:
+    Lines = fp.readlines()
+    for line in Lines:
+        if end_mark == 0 and count == 0 and line.startswith('router ospf'):
+            process = re.sub('\n', '', line)
+            count += 1
+            config_commands.append(process)
+        else:
+            if line.startswith(' area') or line.startswith(' vrf'):
+                area_str = process + re.sub('\n', '', line)
+                config_commands.append(area_str.replace('  ', ' '))
+                end_flag += 1
+            elif end_flag > 0 and '!' not in line:
+                command = area_str + re.sub('\n', '', line)
+                config_commands.append(command.replace('  ', ' '))
+            elif '!' in line:
+                end_flag = 0
+                end_mark += 1
+                # thats the end of vrf or router
+                if end_mark == 3:
+                    end_mark = 0
+                    count = 0
+                area_str = ''
+            else:
+                command = process + line
+                command.replace("  ", " ")
+                config_commands.append(re.sub('\n', '', command))
+                areas.append(re.sub('\n', '', command))
+
+    #listToStr = ' '.join([str(elem) for elem in areas])
+    for line in config_commands:
+        print(line)
+    # print("Line{}: {}".format(count, line.strip()))
