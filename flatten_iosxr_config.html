@@ -10,7 +10,15 @@ import re
 with open('./config.cfg', 'r') as fp:
     Lines = fp.readlines()
     for line in Lines:
+        if line.startswith('router ospf') and curr_process != '' and curr_process != line:
+             print(end_mark)
+             end_mark = 0
+             count = 0
+             end_flag = 0
+             area_str = ''
+
         if end_mark == 0 and count == 0 and line.startswith('router ospf'):
+            curr_process = line
             process = re.sub('\n', '', line)
             count += 1
             config_commands.append(process)
