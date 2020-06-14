@@ -52,7 +52,7 @@ with open('./config.cfg', 'r') as fp:
                 command.replace("  ", " ")
                 config_commands.append(re.sub("\n", "", command))
                 areas.append(re.sub("\n", "", command))
-    # this need to be cleaned
+    # this need to be cleaned properly
 
     for line in config_commands:
         print(line)
