@@ -5,18 +5,12 @@ import re
 
 with open('./config.cfg', 'r') as fp:
     Lines = fp.readlines()
-    fend_flag, end_mark, count, v_read = 0, 0, 0, False
-    areas, config_commands = [], []
-    area_str, process, curr_process = "", "", ""
-    data = data.splitlines()
-    for line in data:
-        if (
-            line.startswith("router ospf")
-            and curr_process != ""
-            and curr_process != line
-        ):
-            end_mark, count, end_flag, area_str = 0, 0, 0, ""
-        if end_mark == 0 and count == 0 and line.startswith("router ospf"):
+
+    for line in Lines:
+        if line.startswith('router ospf') and curr_process != '' and curr_process != line:
+            end_mark, count, end_flag, area_str = 0, 0, 0, ''
+
+        if end_mark == 0 and count == 0 and line.startswith('router ospf'):
             curr_process = line
             process = re.sub("\n", "", line)
             count += 1
@@ -46,7 +40,8 @@ with open('./config.cfg', 'r') as fp:
                 end_mark += 1
                 if end_mark == 3:
                     end_mark, count = 0, 0
-                area_str = ""
+
+                area_str = ''
             else:
                 command = process + line
                 command.replace("  ", " ")
