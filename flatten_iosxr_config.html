@@ -1,7 +1,9 @@
+import re
+
 count, end_flag, end_mark = 0, 0, 0
 area_str, process, curr_process = '', '', ''
 areas, config_commands = [], []
-import re
+
 
 with open('./config.cfg', 'r') as fp:
     Lines = fp.readlines()
